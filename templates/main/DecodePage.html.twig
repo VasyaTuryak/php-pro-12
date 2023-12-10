@@ -14,6 +14,10 @@
     <h1>Decode page</h1>
     <p>Your LONG URL: <b class="blue"><a href="{{long_url}}">{{ long_url}}</a></b> </p>
     <p>Your SORT URL: <b class="red">{{ short_url }}</b> </p>
+    <p>Created at: <b class="red">{{ createdAt }}</b> </p>
+    {% if getRedirectNumber>0 %}
+        <p>Count of redirection: <b class="red">{{ getRedirectNumber }}</b> </p>
+    {% endif %}
     <a href="/"> <- Go Back</a>
 </div>
 {% endblock %}

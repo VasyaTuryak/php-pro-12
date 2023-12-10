@@ -28,17 +28,32 @@
         .blue {
             color: blue
         }
+    p{
+        margin-top: 0;
+    }
     </style>
     <div class="example-wrapper">
-        <h1>Starting page</h1>
-        <b>Here you may encode and decode your URL</b>
+        <h1><b>Hello here</b></h1>
+        <span style='font-size:60px;'>&#128521;</span>
         <br>
-        <form action="{{ path('proxy_page') }}" method="POST">
+        <b>Here you may encode, decode or REDIRECT with your URL</b>
+        <br>
+        <form action="{{ path('helper_page') }}" method="POST">
+            <div>
+                <h3>Choose your option:</h3>
+                <input type="radio" name="option" checked value="code">
+                <p>code</p>
+                <input type="radio" name="option" value="decode">
+                <p>decode</p>
+                <input type="radio" name="option" value="redirect">
+                <p>redirect</p>
+            </div>
             <label>
-                <input class="input" type="url" placeholder="Enter your URL" name="url" required />
+                <input class="input" type="url" placeholder="Enter your Short or Long URL in format http(s)://..."
+                       name="url" required/>
             </label>
             <br/>
-            <button type="submit">CONVERT URL</button>
+            <button type="submit" style="color: red">PROCESS URL</button>
         </form>
     </div>
 {% endblock %}

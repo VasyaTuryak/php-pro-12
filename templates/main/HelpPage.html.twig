@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Decode page!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .blue {color: blue}
+    .red {color: red}
+</style>
+
+<div class="example-wrapper">
+    <h1>Help Page</h1>
+    <p>We do not understand your request &#x1F61E;, make sure you provide correct info, choose CODE, DECODE or REDIRECT</p>
+    <p>When your choose option CODE enter LONG URL</p>
+    <p>When your choose option DECODE or REDIRECT enter SHORT URL</p>
+    <p>Make sure your enter whole URL and did not miss any characters, whole length equal: {{ length }} characters</p>
+    <p>Format URL next http(s)://...</p>
+    <p>Please try again &#128540;</p>
+    <p>THAKS FOR USING OUR SERVICE &#128522;</p>
+    <a href="/"> <- Go Back</a>
+</div>
+{% endblock %}

@@ -19,6 +19,12 @@ class Url
     #[ORM\Column(length: 255)]
     private ?string $LongUrl = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $RedirectNumber = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $CreatedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +50,30 @@ class Url
     public function setLongUrl(string $LongUrl): static
     {
         $this->LongUrl = $LongUrl;
+
+        return $this;
+    }
+
+    public function getRedirectNumber(): ?int
+    {
+        return $this->RedirectNumber;
+    }
+
+    public function setRedirectNumber(?int $RedirectNumber): static
+    {
+        $this->RedirectNumber = $RedirectNumber;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): static
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }

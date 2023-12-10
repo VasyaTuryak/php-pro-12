@@ -13,6 +13,11 @@
 <div class="example-wrapper">
     <h1>Encode page</h1>
     <p>Your LONG URL: <b class="blue"><a href="{{ long_url}}">{{ long_url}}</a></b> </p>
+
+    {% if existInDB==true %}
+        <p class="red">{{ existInDB }}</b> </p>
+    {% endif %}
+
     <p>Your SORT URL: <b class="red">{{ short_url }}</b> </p>
     <p>HTTP response: <u><b>{{ exist }}</b></u> </p>
     <a href="/"> <- Go Back</a>
