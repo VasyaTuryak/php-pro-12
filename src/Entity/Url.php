@@ -25,6 +25,9 @@ class Url
     #[ORM\Column]
     private ?\DateTimeImmutable $CreatedAt;
 
+    #[ORM\Column(length: 180, unique: false, nullable: false)]
+    private ?string $email = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,4 +80,14 @@ class Url
 
         return $this;
     }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+
 }

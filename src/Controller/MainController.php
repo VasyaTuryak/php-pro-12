@@ -20,6 +20,7 @@ class MainController extends AbstractController
         return $this->render('main/StartPage.html.twig');
     }
 
+
     #[Route('/helper', name: 'helper_page')]
     public function helper(Request $request): Response
     {
@@ -42,7 +43,10 @@ class MainController extends AbstractController
             $route = $this->redirectToRoute('encode_page', status: 307);
         } elseif ($option == 'redirect' and preg_match($pattern, $url) and $maxLength == $lengthUrl) {
             $route = $this->redirectToRoute('redirect_page');
-        } else {
+        }elseif ($option == 'statisticsURL' and preg_match($pattern, $url) and $maxLength == $lengthUrl) {
+            $route = $this->redirectToRoute('statistic_page');
+        }
+        else {
             $route = $this->render('main/HelpPage.html.twig',
                 ['length' => $maxLength]);
         }
@@ -61,6 +65,7 @@ class MainController extends AbstractController
     ): Response
     {
         $getUrl = $request->getSession();
+        $user=$getUrl->get('_security.last_username');
         $longUrl = $getUrl->get('url');
         $webResponse = $checkInWeb->exist($longUrl);
         $getLong = $urlRepository->findOneBy(['LongUrl' => $longUrl]);
@@ -73,6 +78,7 @@ class MainController extends AbstractController
             $timeZone = new \DateTimeZone("Europe/Kyiv");
             $date = new \DateTimeImmutable('now', $timeZone);
             $urlEntity->setCreatedAt($date);
+            $urlEntity->setEmail($user);
             $entityManager->persist($urlEntity);
             $entityManager->flush();
         } elseif ($getLong) {
@@ -93,14 +99,14 @@ class MainController extends AbstractController
         $getUrl = $request->getSession();
         $ShortUrl = $getUrl->get('url');
         $getLong = $urlRepository->findOneBy(['ShortUrl' => $ShortUrl]);
-        $getRedirectNumber = $getLong->getRedirectNumber();
-        $createdAt = $getLong->getCreatedAt()->getTimestamp();
-        $dateTime = date('H:i:s Y-m-d', $createdAt);
+//        $getRedirectNumber = $getLong->getRedirectNumber();
+//        $createdAt = $getLong->getCreatedAt()->getTimestamp();
+//        $dateTime = date('H:i:s Y-m-d', $createdAt);
         return $this->render('main/DecodePage.html.twig', [
             'long_url' => $getLong->getLongUrl(),
-            'short_url' => $ShortUrl,
-            'createdAt' => $dateTime,
-            'getRedirectNumber' => $getRedirectNumber,
+            'short_url' => $ShortUrl
+//            'createdAt' => $dateTime,
+//            'getRedirectNumber' => $getRedirectNumber,
 
         ]);
     }
@@ -121,4 +127,35 @@ class MainController extends AbstractController
         return $this->redirect($getLong->getLongUrl());
     }
 
+
+    #[Route('/statistics', name: 'statistic_page', requirements: ['ShortUrl' => '.*'])]
+    public function statistics(UrlRepository $urlRepository, Request $request): Response
+    {
+        $getUrl = $request->getSession();
+        $ShortUrl = $getUrl->get('url');
+        $getLong = $urlRepository->findOneBy(['ShortUrl' => $ShortUrl]);
+        $getRedirectNumber = $getLong->getRedirectNumber();
+        $createdAt = $getLong->getCreatedAt()->getTimestamp();
+        $dateTime = date('H:i:s Y-m-d', $createdAt);
+        return $this->render('main/StatisticsPage.html.twig', [
+            'long_url' => $getLong->getLongUrl(),
+            'short_url' => $ShortUrl,
+            'createdAt' => $dateTime,
+            'getRedirectNumber' => $getRedirectNumber,
+
+        ]);
+    }
+
+
+    #[Route('/AllStatistics', name: 'AllStatistic_page')]
+    public function allStatistics(UrlRepository $urlRepository, Request $request): Response
+    {
+        $user = $request->getSession()->get('_security.last_username');
+        $getAllUrl = $urlRepository->findBy(['email' => $user]);
+//dd($getAllUrl);
+        return $this->render('main/AllStatistics.html.twig', [
+            'data' => $getAllUrl
+        ]);
+
+    }
 }
